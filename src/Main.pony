@@ -30,18 +30,18 @@ class Notify is TimerNotify
 		now_fullSeconds = Time.seconds()
 		now = PosixDate(now_fullSeconds)
 		
-		env.out.write(AppUtil.applyTermCoordinates(2, 1) + "{")
+		env.out.write(AppUtil.applyTermCoordinates(2, 1) + "[")
 		var counter = U8(0)
 		while true do 
 			env.out.write(random.i8().string())
 			counter = counter + 1
 			if counter < 8 then
-				env.out.write(", ")
+				env.out.write("; ")
 			else
 				break
 			end
 		end
-		env.out.write("}")
+		env.out.write("]")
 		true
 
 actor Main
