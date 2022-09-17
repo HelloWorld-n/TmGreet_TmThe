@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd src
-./src
+./src 2> .err.log
