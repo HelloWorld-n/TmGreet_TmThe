@@ -55,7 +55,7 @@ class Notify is TimerNotify
 		)
 
 		for key in data_keys.values() do
-			data.data.update(key, JsonUtil.fetch_data(json_object, key)?)
+			data.data.update(key, JsonUtil.fetch_data_simple(json_object, key)?)
 		end	
 
 

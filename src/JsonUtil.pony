@@ -2,7 +2,7 @@ use "json"
 
 class JsonUtil
 
-	fun ref fetch_data(json: JsonObject, key: String): (I64|F64|String|Bool)? =>
+	fun ref fetch_data_simple(json: JsonObject, key: String): (I64|F64|String|Bool)? =>
 		try
 			match json.data(key)?
 			| let value: (I64|F64|String|Bool) =>
