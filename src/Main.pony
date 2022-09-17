@@ -79,11 +79,11 @@ class Notify is TimerNotify
 			while JsonUtil.fetch_data_i64(data, "XP")? >= goal(JsonUtil.fetch_data_i64(data, "LEVEL")?) do
 				data.data.update(
 					"XP", 
-					JsonUtil.fetch_data_i64(data, "XP")? - JsonUtil.fetch_data_i64(data, "GOAL")?
+					JsonUtil.fetch_data_i64(data, "XP")? - goal(JsonUtil.fetch_data_i64(data, "LEVEL")?)
 				)
 				data.data.update(
 					"LEVEL", 
-					JsonUtil.fetch_data_i64(data, "LEVEL")? + 1
+					JsonUtil.fetch_data_i64(data, "LEVEL")? + I64(1)
 				)
 			end
 		else
