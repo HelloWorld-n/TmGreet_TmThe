@@ -137,14 +137,20 @@ class Notify is TimerNotify
 				break
 			end
 		end
+		consume counter
 		env.out.write("]")
 
-		env.out.write("\n\n" + data.string("\t", true) + "\n\n")
 		try
-			env.out.write("REACH " + goal(JsonUtil.fetch_data_i64(data, "LEVEL")?).string() + " TO LEVEL UP")
-		else	
-			env.out.write("REACH `NaN` TO LEVEL UP")
+			env.out.write("\n\n{\n")
+			for data_key in data_keys.values() do
+				env.out.write(
+					"\t\"" + data_key + "\": " + JsonUtil.fetch_data_simple(data, data_key)?.string() + ",\n"
+				)
+			end
+			env.out.write("\t\"GOAL\": " + goal(JsonUtil.fetch_data_i64(data, "LEVEL")?).string() + ",\n")
+			env.out.write("}\n\n")
 		end
+		
 		improve()
 		save()
 		true
