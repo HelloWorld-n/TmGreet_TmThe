@@ -32,7 +32,6 @@ class Notify is TimerNotify
 	fun goal(level: I64): I64 =>
 		(16 * (level * level * level)) + (8 * 8 * 8)
 	
-	
 
 	fun ref load()? =>
 		let path = FilePath(FileAuth(env.root), "./.data.json")
@@ -101,7 +100,6 @@ class Notify is TimerNotify
 			env.out.write(AppUtil.applyBackgroundColor(127, 0, 0))
 		end
 	
-
 	new iso create(env': Env) =>
 		env = env'
 		random = Rand.create(Time.seconds().u64())
@@ -156,6 +154,7 @@ class Notify is TimerNotify
 			end
 		end
 		consume counter
+		consume countPositives
 		env.out.write("]" + termColor_end)
 
 	fun ref write_data() =>
@@ -171,12 +170,12 @@ class Notify is TimerNotify
 				)
 			end
 			env.out.write(
-					"\t" + (
-						termColor_key + "\"GOAL\"" + termColor_basicText
-					) + ": " + (
-						termColor_value + goal(JsonUtil.fetch_data_i64(data, "LEVEL")?).string() + termColor_basicText
-					) + ",\n"
-				)
+				"\t" + (
+					termColor_key + "\"GOAL\"" + termColor_basicText
+				) + ": " + (
+					termColor_value + goal(JsonUtil.fetch_data_i64(data, "LEVEL")?).string() + termColor_basicText
+				) + ",\n"
+			)
 			env.out.write("}\n\n" + termColor_end)
 		end
 		
