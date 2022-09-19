@@ -13,6 +13,17 @@ class Notify is TimerNotify
 		"XP"
 	]
 
+	let termColor_basicText: String = (
+		AppUtil.applyBackgroundColor(0, 0, 0) + AppUtil.applyForegroundColor(127, 189, 189)
+	)
+	let termColor_key: String = (
+		AppUtil.applyBackgroundColor(0, 0, 0) + AppUtil.applyForegroundColor(235, 189, 64)
+	)
+	let termColor_value: String = (
+		AppUtil.applyBackgroundColor(0, 0, 0) + AppUtil.applyForegroundColor(189, 64, 235)
+	)
+	let termColor_end: String = AppUtil.resetTermColor()
+
 	var data: JsonObject
 	var data_click: I64 = 1
 	var data_level: I64 = 0
@@ -114,11 +125,11 @@ class Notify is TimerNotify
 		try
 			env.out.write(
 				(
-					now.format("%Y-%m-%dT%H:%M:%S")? + " "
+					termColor_value + now.format("%Y-%m-%dT%H:%M:%S")?
 				) + (
-					AppUtil.applyForegroundColor(127, 31, 196) + "(UTC)"
+					termColor_key + "(UTC)"
 				) + (
-					AppUtil.resetTermColor() + "\n"
+					termColor_end + "\n"
 				)
 			)
 		end
@@ -140,15 +151,27 @@ class Notify is TimerNotify
 		consume counter
 		env.out.write("]")
 
+		
 		try
-			env.out.write("\n\n{\n")
+
+			env.out.write(termColor_basicText + "\n\n{\n")
 			for data_key in data_keys.values() do
 				env.out.write(
-					"\t\"" + data_key + "\": " + JsonUtil.fetch_data_simple(data, data_key)?.string() + ",\n"
+					"\t" + (
+						termColor_key + "\"" + data_key + "\"" + termColor_basicText
+					) + ": " + (
+						termColor_value + JsonUtil.fetch_data_simple(data, data_key)?.string() + termColor_basicText
+					) + ",\n"
 				)
 			end
-			env.out.write("\t\"GOAL\": " + goal(JsonUtil.fetch_data_i64(data, "LEVEL")?).string() + ",\n")
-			env.out.write("}\n\n")
+			env.out.write(
+					"\t" + (
+						termColor_key + "\"GOAL\"" + termColor_basicText
+					) + ": " + (
+						termColor_value + goal(JsonUtil.fetch_data_i64(data, "LEVEL")?).string() + termColor_basicText
+					) + ",\n"
+				)
+			env.out.write("}\n\n" + termColor_end)
 		end
 		
 		improve()
