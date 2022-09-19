@@ -139,12 +139,22 @@ class Notify is TimerNotify
 		
 		env.out.write("[")
 		var counter = U8(0)
+		var countPositives = U8(0)
 		while true do 
-			env.out.write(random.i8().string())
+			let randomValue = random.i8()
+			env.out.write(randomValue.string())
 			counter = counter + 1
+			if randomValue >= 0 then
+				countPositives = countPositives + 1
+			end
 			if counter < 8 then
 				env.out.write(", ")
 			else
+				if countPositives == counter then
+					try
+						data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1)
+					end
+				end
 				break
 			end
 		end
