@@ -116,33 +116,30 @@ class Notify is TimerNotify
 			data.data.update("XP", data_xp)
 		end
 
-
-	fun ref apply(timer: Timer, count: U64): Bool =>
+	fun write_timeNowUtc() =>
 		var now_fullSeconds = Time.seconds()
 		var now = PosixDate(Time.seconds())
 
-		env.out.write(AppUtil.applyTermCoordinates(1, 1) + AppUtil.clearTerm())
 		try
 			env.out.write(
 				(
 					termColor_value + now.format("%Y-%m-%dT%H:%M:%S")?
 				) + (
-					termColor_key + "(UTC)"
+					termColor_key + " (UTC)"
 				) + (
 					termColor_end + "\n"
 				)
 			)
 		end
 
-		now_fullSeconds = Time.seconds()
-		now = PosixDate(now_fullSeconds)
-		
+	fun ref maybeImproveClick() =>
+		env.out.write(termColor_basicText)
 		env.out.write("[")
 		var counter = U8(0)
 		var countPositives = U8(0)
 		while true do 
 			let randomValue = random.i8()
-			env.out.write(randomValue.string())
+			env.out.write(termColor_value + randomValue.string() + termColor_basicText)
 			counter = counter + 1
 			if randomValue >= 0 then
 				countPositives = countPositives + 1
@@ -159,11 +156,10 @@ class Notify is TimerNotify
 			end
 		end
 		consume counter
-		env.out.write("]")
+		env.out.write("]" + termColor_end)
 
-		
+	fun ref write_data() =>
 		try
-
 			env.out.write(termColor_basicText + "\n\n{\n")
 			for data_key in data_keys.values() do
 				env.out.write(
@@ -184,7 +180,13 @@ class Notify is TimerNotify
 			env.out.write("}\n\n" + termColor_end)
 		end
 		
+
+	fun ref apply(timer: Timer, count: U64): Bool =>
+		env.out.write(AppUtil.applyTermCoordinates(1, 1) + AppUtil.clearTerm())
+		write_timeNowUtc()
+		maybeImproveClick()
 		improve()
+		write_data()
 		save()
 		true
 
