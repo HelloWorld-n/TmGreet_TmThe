@@ -131,6 +131,8 @@ class Notify is TimerNotify
 		end
 
 	fun ref maybeImproveClick() =>
+		var isImproved = false
+
 		env.out.write(termColor_basicText)
 		env.out.write("[")
 		var counter = U8(0)
@@ -148,6 +150,7 @@ class Notify is TimerNotify
 				if countPositives == counter then
 					try
 						data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1)
+						isImproved = true
 					end
 				end
 				break
@@ -155,11 +158,15 @@ class Notify is TimerNotify
 		end
 		consume counter
 		consume countPositives
-		env.out.write("]" + termColor_end)
+		env.out.write("]" + termColor_end + "\n")
+		if isImproved then
+			maybeImproveClick()
+		end
+
 
 	fun ref write_data() =>
 		try
-			env.out.write(termColor_basicText + "\n\n{\n")
+			env.out.write(termColor_basicText + "{\n")
 			for data_key in data_keys.values() do
 				env.out.write(
 					"\t" + (
@@ -176,7 +183,7 @@ class Notify is TimerNotify
 					termColor_value + goal(JsonUtil.fetch_data_i64(data, "LEVEL")?).string() + termColor_basicText
 				) + ",\n"
 			)
-			env.out.write("}\n\n" + termColor_end)
+			env.out.write("}" + termColor_end)
 		end
 		
 
