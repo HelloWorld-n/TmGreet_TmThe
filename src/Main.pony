@@ -130,7 +130,7 @@ class Notify is TimerNotify
 			)
 		end
 
-	fun ref maybeImproveClick(arg_clickBoost: (I64|None) = None) =>
+	fun ref maybeImproveClick(arg_clickBoost: (I64|None) = None, iterNo: U64 = 0) =>
 		var isImproved = false
 		var clickBoost: I64 = (
 			match arg_clickBoost
@@ -149,7 +149,7 @@ class Notify is TimerNotify
 		var counter = U8(0)
 		var sumNegatives = I64(0)
 		while true do 
-			let randomValue = random.i8().i64()
+			let randomValue = random.i8().i64() - (iterNo.i64() * 8)
 			if randomValue < 0 then
 				sumNegatives = sumNegatives + randomValue
 			end
@@ -169,14 +169,16 @@ class Notify is TimerNotify
 		end
 		consume counter
 
-		env.out.write("]" + termColor_end + "\n")
+		env.out.write("]" + termColor_end)
+		env.out.write(" (" + sumNegatives.string() + ", " + clickBoost.string() + ")\n")
 		if isImproved then
 			maybeImproveClick(
 				if sumNegatives >= 0 then 
 					clickBoost
 				else
 					clickBoost + sumNegatives
-				end
+				end,
+				iterNo + 1
 			)
 		end
 
