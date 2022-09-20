@@ -22,6 +22,9 @@ class Notify is TimerNotify
 	let termColor_value: String = (
 		AppUtil.applyBackgroundColor(0, 0, 0) + AppUtil.applyForegroundColor(189, 64, 235)
 	)
+	let termColor_comment: String = (
+		AppUtil.applyBackgroundColor(0, 0, 0) + AppUtil.applyForegroundColor(96, 96, 96)
+	)
 	let termColor_end: String = AppUtil.resetTermColor()
 
 	var data: JsonObject
@@ -175,8 +178,7 @@ class Notify is TimerNotify
 		end
 		consume counter
 
-		env.out.write("]" + termColor_end)
-		env.out.write(" (" + sumNegatives.string() + ", " + clickBoost.string() + ")\n")
+		env.out.write("]" + termColor_comment + " \\\\ (" + sumNegatives.string() + ", " + clickBoost.string() + ")\n")
 		if isImproved then
 			maybeImproveClick(
 				if sumNegatives >= 0 then 
