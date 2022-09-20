@@ -130,24 +130,35 @@ class Notify is TimerNotify
 			)
 		end
 
-	fun ref maybeImproveClick() =>
+	fun ref maybeImproveClick(arg_clickBoost: (I64|None) = None) =>
 		var isImproved = false
-
+		var clickBoost: I64 = (
+			match arg_clickBoost
+			| let clickBoost': I64 =>
+				clickBoost'
+			else
+				try
+					JsonUtil.fetch_data_i64(data, "CLICK")?
+				else
+					I64(0)
+				end
+			end
+		)
 		env.out.write(termColor_basicText)
 		env.out.write("[")
 		var counter = U8(0)
-		var countPositives = U8(0)
+		var sumNegatives = I64(0)
 		while true do 
-			let randomValue = random.i8()
+			let randomValue = random.i8().i64()
+			if randomValue < 0 then
+				sumNegatives = sumNegatives + randomValue
+			end
 			env.out.write(termColor_value + randomValue.string() + termColor_basicText)
 			counter = counter + 1
-			if randomValue >= 0 then
-				countPositives = countPositives + 1
-			end
 			if counter < 8 then
 				env.out.write(", ")
 			else
-				if countPositives == counter then
+				if (sumNegatives + clickBoost) >= 0 then
 					try
 						data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1)
 						isImproved = true
@@ -157,10 +168,16 @@ class Notify is TimerNotify
 			end
 		end
 		consume counter
-		consume countPositives
+
 		env.out.write("]" + termColor_end + "\n")
 		if isImproved then
-			maybeImproveClick()
+			maybeImproveClick(
+				if sumNegatives >= 0 then 
+					clickBoost
+				else
+					clickBoost + sumNegatives
+				end
+			)
 		end
 
 
