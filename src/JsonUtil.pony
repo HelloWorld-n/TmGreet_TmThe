@@ -25,3 +25,39 @@ class JsonUtil
 		else
 			error	
 		end
+
+	fun ref fetch_data_f64(json: JsonObject, key: String): F64? =>
+		try
+			match json.data(key)?
+			| let value: F64 =>
+				value
+			else
+				error
+			end
+		else
+			error	
+		end
+
+	fun ref fetch_data_string(json: JsonObject, key: String): String? =>
+		try
+			match json.data(key)?
+			| let value: String =>
+				value
+			else
+				error
+			end
+		else
+			error	
+		end
+
+	fun ref fetch_data_bool(json: JsonObject, key: String): Bool? =>
+		try
+			match json.data(key)?
+			| let value: Bool =>
+				value
+			else
+				error
+			end
+		else
+			error	
+		end
