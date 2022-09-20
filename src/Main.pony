@@ -144,12 +144,18 @@ class Notify is TimerNotify
 				end
 			end
 		)
-		env.out.write(termColor_basicText)
-		env.out.write("[")
+
+		env.out.write(
+			(
+				termColor_key + "iteration[" + iterNo.string() + "]"
+			) + (
+				termColor_basicText + " = ["
+			)
+		)
 		var counter = U8(0)
 		var sumNegatives = I64(0)
 		while true do 
-			let randomValue = random.i8().i64() - (iterNo.i64() * 8)
+			let randomValue = random.i8().i64() - (iterNo.i64() * 32)
 			if randomValue < 0 then
 				sumNegatives = sumNegatives + randomValue
 			end
