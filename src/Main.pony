@@ -158,7 +158,7 @@ class Notify is TimerNotify
 		var counter = U8(0)
 		var sumNegatives = I64(0)
 		while true do 
-			let randomValue = random.i8().i64() - (iterNo.i64() * 32)
+			let randomValue = random.i8().i64() - (iterNo.i64() * 256)
 			if randomValue < 0 then
 				sumNegatives = sumNegatives + randomValue
 			end
@@ -169,7 +169,7 @@ class Notify is TimerNotify
 			else
 				if (sumNegatives + clickBoost) >= 0 then
 					try
-						data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1)
+						data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1 + (iterNo * iterNo).i64())
 						isImproved = true
 					end
 				end

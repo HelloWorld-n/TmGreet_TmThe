@@ -13,6 +13,20 @@ class JsonUtil
 		else
 			error	
 		end
+
+	fun ref fetch_data_stringable(json: JsonObject, key: String): String? =>
+		try
+			match json.data(key)?
+			| let value: Stringable =>
+				value.string()
+			else
+				error
+			end
+		else
+			error	
+		end
+
+	
 	
 	fun ref fetch_data_i64(json: JsonObject, key: String): I64? =>
 		try
