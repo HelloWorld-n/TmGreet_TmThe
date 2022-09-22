@@ -2,6 +2,7 @@ use "time"
 use "random"
 use "files"
 use "json"
+use "collections"
 
 
 class Notify is TimerNotify
@@ -158,15 +159,20 @@ class Notify is TimerNotify
 		var counter = U8(0)
 		var sumNegatives = I64(0)
 		while true do 
-			let randomValue = random.i8().i64() - (
-				iterNo.i64() * 128
-			) - (
-				if iterNo >= 4 then 
-					(iterNo.i64() - 4) * (iterNo.i64() - 4) * 512
+			var randomValue = random.i8().i64()
+			var iterQuad: I64 = 1
+			for value in Range[I64](1, 32) do 
+				if iterNo >= value.u64() then 
+					iterQuad = iterQuad * 8
+					randomValue = randomValue - (
+						(iterNo.i64() - value) * (iterNo.i64() - value) * iterQuad
+					)
 				else 
 					0 
 				end
-			)
+			end
+			consume iterQuad
+
 			if randomValue < 0 then
 				sumNegatives = sumNegatives + randomValue
 			end
