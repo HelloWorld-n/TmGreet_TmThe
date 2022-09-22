@@ -182,10 +182,10 @@ class Notify is TimerNotify
 				env.out.write(", ")
 			else
 				if (sumNegatives + clickBoost) >= 0 then
-					try
-						data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1 + (4 * iterNo.i64()))
-						isImproved = true
-					end
+					isImproved = true
+				end
+				try
+					data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1 + iterNo.i64())
 				end
 				break
 			end
