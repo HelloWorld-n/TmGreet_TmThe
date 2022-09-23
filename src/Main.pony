@@ -185,7 +185,7 @@ class Notify is TimerNotify
 					isImproved = true
 				end
 				try
-					data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1 + iterNo.i64())
+					data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1)
 				end
 				break
 			end

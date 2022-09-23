@@ -26,6 +26,20 @@ class JsonUtil
 			error	
 		end
 
+	fun ref fetch_data_numerical(json: JsonObject, key: String): (I64|F64)? =>
+		try
+			match json.data(key)?
+			| let value: I64 =>
+				value
+			| let value: F64 =>
+				value
+			else
+				error
+			end
+		else
+			error	
+		end
+
 	
 	
 	fun ref fetch_data_i64(json: JsonObject, key: String): I64? =>
