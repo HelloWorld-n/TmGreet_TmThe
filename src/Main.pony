@@ -163,7 +163,7 @@ class Notify is TimerNotify
 			var iterQuad: I64 = 1
 			for value in Range[I64](1, 32) do 
 				if iterNo >= value.u64() then 
-					iterQuad = iterQuad * 8
+					iterQuad = iterQuad * 4
 					randomValue = randomValue - (
 						(iterNo.i64() - value) * (iterNo.i64() - value) * iterQuad
 					)
@@ -185,7 +185,14 @@ class Notify is TimerNotify
 					isImproved = true
 				end
 				try
-					data.data.update("CLICK", JsonUtil.fetch_data_i64(data, "CLICK")? + 1)
+					data.data.update(
+						"CLICK", 
+						JsonUtil.fetch_data_i64(data, "CLICK")? + 1 + (
+							if iterNo < 4 then 0 else iterNo.i64() end
+						) + (
+							if iterNo < 8 then 0 else iterNo.i64() end
+						)
+					)
 				end
 				break
 			end
